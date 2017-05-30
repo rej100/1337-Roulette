@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--font-family: 'Lato', sans-serif; font-family: 'Josefin Sans', sans-serif;-->
+    <meta charset="utf-8">
+    <title>1337</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato" rel="stylesheet">
+    <script src="./vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+      /*
+      1 - grey - 60 - x2
+      2 - blue - 35 - x4
+      3 - green - 5 - x80
+      */
+      var hostname = "http://c-cichy.ddns.net:2777";
+      var rolledColor = 0, pickedColor = 0, bet = 0, lm = false;
+      /*
+      function Roll()
+      {
+        var randomNumber = Math.floor(Math.random() * 100 + 1);
+        WriteLog("randomNumber: " + randomNumber);
+        if(61 > randomNumber)
+        {
+          return 1;
+        }
+        else if (96 > randomNumber)
+        {
+          return 2;
+        }
+        else
+        {
+          return 3;
+        }
+      }
+      */
+
+      function sleep(ms)
+      {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+
+      function UpdateCoins()
+      {
+        GetCoins();
+        setTimeout(UpdateCoins, 500);
+      }
+
+      function HandleAdmClick()
+      {
+        var jsIsIdiotic;
+        jsIsIdiotic = document.getElementById("spass").value;
+        //WriteLog(jsIsIdiotic);
+        axios.post((hostname + "/adml"),
+        {
+          sPass: jsIsIdiotic
+        }).catch(function (error)
+        {
+          WriteLog(error);
+        });
+      }
+      function WriteLog(text)
+      {
+        var toWrite = " ";
+        toWrite += text;
+        document.getElementById("log").innerHTML += toWrite + "\n";
+      }
+      function GetCoins()
+      {
+        axios.get(hostname + "/getcoins").then(function (response)
+        {
+          coins = parseInt(response.data);
+          //WriteLog("rec: " + response.data);
+          SetCoins();
+        }).catch(function (err)
+        {
+          WriteLog(err);
+        });
+        }
+      function SetCoins()
+      {
+        document.getElementById("coinsContainer").innerHTML = "Coins: " + coins;
+      }
+
+      function RollClick()
+      {
+        /*
+        Error codes:
+        0: everything's k
+        1: invalid bet
+        2: not enough coins
+        3: no color picked
+        */
+        var stringifiedResp;
+        var parsedResp;
+        axios.post((hostname + "/rollcl"),
+        {
+          cPicked: pickedColor,
+          cBet: bet
+        }).then(function(response)
+        {
+          stringifiedResp = JSON.stringify(response.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          //WriteLog(parsedResp.err + " " + parsedResp.result + " " + parsedResp.rolled);
+
+          if(parsedResp.err == 1)
+          {
+            WriteLog("Invalid bet.");
+          }
+          else if(parsedResp.err == 2)
+          {
+            WriteLog("Not enough coins!");
+          }
+          else if (parsedResp.err == 3)
+          {
+            WriteLog("Pick a color!");
+          }
+          else if (parsedResp.err == 0)
+          {
+            WriteLog("Rolled color: " + parsedResp.rolled);
+            if(parsedResp.result == 2)
+            {
+              WriteLog("Won!");
+            }
+            else if (parsedResp.result == 1)
+            {
+              WriteLog("Lost!");
+            }
+          }
+          else
+          {
+            WriteLog("Something obviously went wrong :/");
+          }
+        });
+      }
+
+      function SetPickedColor(color)
+      {
+        pickedColor = color;
+      }
+      function GetBet()
+      {
+        //WriteLog("bet input html: " + document.getElementById("betInput").innerHTML);
+        //WriteLog("bet input value: " + document.getElementById("betInput").value);
+        bet = document.getElementById("betInput").value;
+      }
+      function clearLog()
+      {
+        document.getElementById("log").innerHTML = " ";
+      }
+      function SetCheck(num)
+      {
+        if(num === 0)
+        {
+          document.getElementById("greyCheck").style.visibility = "visible";
+          document.getElementById("blueCheck").style.visibility = "hidden";
+          document.getElementById("greenCheck").style.visibility = "hidden";
+        }
+        else if(num === 1)
+        {
+          document.getElementById("greyCheck").style.visibility = "hidden";
+          document.getElementById("blueCheck").style.visibility = "visible";
+          document.getElementById("greenCheck").style.visibility = "hidden";
+        }
+        else if(num === 2)
+        {
+          document.getElementById("greyCheck").style.visibility = "hidden";
+          document.getElementById("blueCheck").style.visibility = "hidden";
+          document.getElementById("greenCheck").style.visibility = "visible";
+        }
+      }
+    </script>
+  </head>
+  <body onload="GetCoins(); UpdateCoins();">
+    <div id="cut">
+      <div class="filler"></div>
+      <div id="coinsContainer"></div>
+      <div id="pointing">
+        <h1>Pick a color to bet on!</h1>
+        <img id="arrowpng" src="./rightArrow.png" alt="">
+      </div>
+      <div id="betting">
+        <h1>Your bet:</h1>
+        <input type="number" onchange="GetBet()" id="betInput" value="">
+        <div id="colors">
+          <div class="fillerD"></div>
+          <div id="colorGrey" onclick="SetPickedColor(1); SetCheck(0);">
+            <div class="fils"></div>
+            <div id="greyCheck"></div>
+          </div>
+          <div class="fillerD"></div>
+          <div id="colorBlue" onclick="SetPickedColor(2); SetCheck(1);">
+            <div class="fils"></div>
+            <div id="blueCheck"></div>
+          </div>
+          <div class="fillerD"></div>
+          <div id="colorGreen" onclick="SetPickedColor(3); SetCheck(2);">
+            <div class="fils"></div>
+            <div id="greenCheck"></div>
+          </div>
+        </div>
+        <button type="button" id="betit" onclick="RollClick()">Roll!</button>
+        <button type="button" id="clearlg" onclick="clearLog()">Clear Log</button>
+      </div>
+      <div id="info">
+        Odds:<br>
+        Grey - 60%<br>
+        Blue - 35%<br>
+        Green - 5%<br>
+        Multipliers:<br>
+        Grey - 2x<br>
+        Blue - 4x<br>
+        Green - 10x<br>
+      </div>
+
+      <div class="filler"></div>
+      <div id="logContainer">
+        <div class="fillerD"></div>
+        <textarea name="name" id="log" rows="8" cols="80" readonly></textarea>
+      </div>
+      <div id="adminCoinsAdd">
+        <p id = "adctxt">Enter the secret pass to instantly add 100 coins.</p>
+        <input type="text" id="spass" value=""/> <br>
+        <button type="button" onclick="HandleAdmClick();" id="spassbutton">ADD</button>
+      </div>
+    </div>
+  </body>
+</html>
