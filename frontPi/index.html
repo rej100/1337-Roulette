@@ -36,6 +36,61 @@
       }
       */
 
+      function GetJSON(son, doSlice)
+      {
+        var pr, tr, nw;
+        pr = JSON.stringify(son);
+        nw = pr;
+        if(doSlice)
+        {
+          nw = pr.slice(1, pr.length - 1);
+        }
+        tr = JSON.parse(nw);
+        return tr;
+      }
+
+      function HandleTop()
+      {
+        var ut1, ut2, ut3, ut4, ut5;
+        axios.get("/topfusers").then(function(res)
+        {
+          stringifiedResp = JSON.stringify(res.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          ut1 = GetJSON(parsedResp.t1, true);
+          ut2 = GetJSON(parsedResp.t2, true);
+          ut3 = GetJSON(parsedResp.t3, true);
+          ut4 = GetJSON(parsedResp.t4, true);
+          ut5 = GetJSON(parsedResp.t5, true);
+          //console.log(ut5.coins);
+          document.getElementById("topOne").innerHTML = ut1.login + "<br> Coins: " + ut1.coins;
+          document.getElementById("topTwo").innerHTML = ut2.login + "<br> Coins: " + ut2.coins;
+          document.getElementById("topThree").innerHTML = ut3.login + "<br> Coins: " + ut3.coins;
+          document.getElementById("topFour").innerHTML = ut4.login + "<br> Coins: " + ut4.coins;
+          document.getElementById("topFive").innerHTML = ut5.login + "<br> Coins: " + ut5.coins;
+        });
+      }
+      function GetLogin()
+      {
+        axios.post((hostname + "/getlogin"),
+        {
+
+        }).then(function(res)
+        {
+          stringifiedResp = JSON.stringify(res.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          if(parsedResp.login == undefined)
+          {
+            document.getElementById("loggedinas").innerHTML = "You must log in!"
+          }
+          else
+          {
+            document.getElementById("loggedinas").innerHTML = "Logged in as: " + parsedResp.login;
+            document.getElementById("loggedinas").style.backgroundColor = "lime";
+          }
+          setTimeout(GetLogin, 2000);
+        });
+      }
+
       function sleep(ms)
       {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -44,22 +99,33 @@
       function UpdateCoins()
       {
         GetCoins();
-        setTimeout(UpdateCoins, 500);
+        setTimeout(UpdateCoins, 2000);
       }
 
       function HandleAdmClick()
       {
-        var jsIsIdiotic;
-        jsIsIdiotic = document.getElementById("spass").value;
-        //WriteLog(jsIsIdiotic);
-        axios.post((hostname + "/adml"),
+        var stringifiedResp;
+        var parsedResp;
+
+        axios.get("/adml").then(function(response)
         {
-          sPass: jsIsIdiotic
-        }).catch(function (error)
-        {
-          WriteLog(error);
+          stringifiedResp = JSON.stringify(response.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          console.log(parsedResp);
+
+          if(parsedResp.case == 1)
+          {
+            WriteLog("Not available yet!");
+
+          }
+          else
+          {
+            WriteLog("Added 100 coins!");
+          }
+          UpdateCoins();
         });
       }
+
       function WriteLog(text)
       {
         var toWrite = " ";
@@ -91,6 +157,10 @@
         1: invalid bet
         2: not enough coins
         3: no color picked
+        Result codes:
+        0: smth went wrong
+        1: Loss
+        2: Win
         */
         var stringifiedResp;
         var parsedResp;
@@ -133,6 +203,7 @@
             WriteLog("Something obviously went wrong :/");
           }
         });
+        UpdateCoins();
       }
 
       function SetPickedColor(color)
@@ -170,9 +241,23 @@
           document.getElementById("greenCheck").style.visibility = "visible";
         }
       }
+
+
     </script>
   </head>
-  <body onload="GetCoins(); UpdateCoins();">
+  <body onload="GetCoins(); UpdateCoins(); GetLogin(); HandleTop();">
+    <div id="topper">
+      <div id="topLinks">
+        <ul>
+          <li id="loggedinas">Logged in as: </li>
+          <li><a href="/u/logout">Logout</a></li>
+          <li><a href="/u/login">Login</a></li>
+          <li><a href="/u/register">Register</a></li>
+          <li><a href="/info">Info</a></li>
+          <li><a href="/">Main</a></li>
+        </ul>
+      </div>
+    </div>
     <div id="cut">
       <div class="filler"></div>
       <div id="coinsContainer"></div>
@@ -180,6 +265,7 @@
         <h1>Pick a color to bet on!</h1>
         <img id="arrowpng" src="./rightArrow.png" alt="">
       </div>
+
       <div id="betting">
         <h1>Your bet:</h1>
         <input type="number" onchange="GetBet()" id="betInput" value="">
@@ -203,6 +289,24 @@
         <button type="button" id="betit" onclick="RollClick()">Roll!</button>
         <button type="button" id="clearlg" onclick="clearLog()">Clear Log</button>
       </div>
+      <div id="toppl">
+        <p class = "topfp">-=Top 5=-</p>
+        <div class="toplace" id="tpOne">
+          <p id ="topOne" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpTwo">
+          <p id ="topTwo" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpThree">
+          <p id ="topThree" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpFour">
+          <p id ="topFour" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpFive">
+          <p id ="topFive" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+      </div>
       <div id="info">
         Odds:<br>
         Grey - 60%<br>
@@ -219,11 +323,12 @@
         <div class="fillerD"></div>
         <textarea name="name" id="log" rows="8" cols="80" readonly></textarea>
       </div>
+
       <div id="adminCoinsAdd">
-        <p id = "adctxt">Enter the secret pass to instantly add 100 coins.</p>
-        <input type="text" id="spass" value=""/> <br>
-        <button type="button" onclick="HandleAdmClick();" id="spassbutton">ADD</button>
+        <p id = "adctxt">Click here to get free coins! (Available every 10 seconds)</p>
+        <button type="button" onclick="HandleAdmClick();" id="spassbutton">GET!</button>
       </div>
+
     </div>
   </body>
 </html>

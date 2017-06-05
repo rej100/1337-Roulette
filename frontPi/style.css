@@ -13,6 +13,81 @@ body
   width: 80%;
   background-color: #666666;
 }
+#regForm
+{
+  position: relative;
+  clear: both;
+  height: 600px;
+  width: 50%;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  margin: auto;
+}
+.regButtonContainer
+{
+  clear: both;
+  position: relative;
+  margin: auto;
+  width: 40%;
+  height: 75px;
+  border-style: solid;
+  border-color: black;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.regSubmitButton
+{
+  clear: both;
+  width: 90%;
+  height: 60px;
+  font-size: 2.0vw;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+.regSubmitButton:hover
+{
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.regInputContainer
+{
+  clear: both;
+  position: relative;
+  margin: auto;
+  width: 75%;
+  height: 75px;
+  border-style: solid;
+  border-color: black;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.regInput
+{
+  clear: both;
+
+  position: relative;
+  width: 90%;
+  height: 40px;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: black;
+  background-color: rgba(255, 255, 255, 0.1);
+  font-size: 1.5vw;
+  padding-left: 10px;
+  color: black;
+}
+::placeholder
+{
+  opacity: 0.7 !important;
+  color: black !important;
+}
 .filler
 {
   height: 30px;
@@ -119,6 +194,10 @@ body
   width: 16%;
   margin-left: 3%;
   height: 500px;
+  border-style: solid;
+  border-color: black;
+  padding-left: 1.8%;
+  padding-top: 15px;
 }
 #log
 {
@@ -135,10 +214,10 @@ body
 #adminCoinsAdd
 {
   margin-right: 6%;
-  margin-top: -420px; /*420BOIIIIIIIIIIIII*/
+  margin-top: -300px; /*Used to be 420*/
   float: right;
   width: 20%;
-  height: 180px;
+  height: 200px;
   /*background-color: lime;*/
   border-style: solid;
 
@@ -147,25 +226,54 @@ body
 {
   clear: both;
   margin-top: 1px;
-  font-size: 1.2vw;
+  font-size: 1.3vw;
   text-align: center;
 }
-#spass
+#toppl
 {
   clear: both;
-  width: 70%;
-  height: 20px;
-  margin-left: 15%;
-  border-radius: 10px;
+  position: absolute;
+  width: 15%;
+  height: 420px;
+  border-color: black;
   border-style: solid;
-  background-color: rgba(255, 255, 255, 0.1);
+  margin-left: 62.5%;
+  margin-top: -240px;
+}
+.topfp
+{
+  font-size: 3.3vw;
+  text-align: center;
+  margin-top: -6px;
+}
+.toplace
+{
+  position: relative;
+  width: 80%;
+  height: 50px;
+  border-color: black;
+  border-style: solid;
+  margin-left: 8.5%;
+  margin-top: 10px;
+  background-color: cyan;
+}
+.toplace:first-of-type
+{
+  margin-top: -40px;
+}
+.toplacetext
+{
+    text-align: center;
+    font-size: 1.1vw;
+    margin-top: 2px;
 }
 #spassbutton
 {
-  margin-top: 20px;
-  width: 30%;
-  height: 30px;
-  margin-left: 35%;
+  margin-top: -10px;
+  font-size: 3vw;
+  width: 70%;
+  height: 90px;
+  margin-left: 15%;
   border-radius: 10px;
   border-style: solid;
   border-color: black;
@@ -255,8 +363,80 @@ body
   width: 100%;
   height: 6px;
 }
-
-
+#topper
+{
+  position: fixed;
+  height: 70px;
+  width: 100%;
+  background-color: #d9d9d9;
+  margin-top: -50px;
+  margin-left: -0.5%;
+  z-index: 1;
+}
+#topper ul li
+{
+  float: right;
+  margin-right: 3%;
+  font-size: 1.6vw;
+  list-style: none;
+}
+#topper ul li a
+{
+  float: right;
+  margin-right: 3%;
+  font-size: 1.6vw;
+  list-style: none;
+  text-decoration: none;
+  color: black;
+}
+#topper ul li a:hover
+{
+  float: right;
+  margin-right: 3%;
+  font-size: 1.6vw;
+  list-style: none;
+  text-decoration: none;
+  color: lime;
+}
+#topper ul li:first-child
+{
+  float: right;
+  margin-right: 2.5%;
+  font-size: 1.6vw;
+  list-style: none;
+  display: block;
+  border-style: solid;
+  height: 40px;
+  width: 25%;
+  text-align: center;
+  background-color: #ff6666;
+}
+.errorre
+{
+  font-size: 1.8vw;
+  position: absolute;
+  border-style: solid;
+  width: 70%;
+  height: 75px;
+  margin-left: 95%;
+  /*margin-top: -547px;*/
+  background-color: #ff6666;
+  text-align: center;
+  visibility: hidden;
+}
+.errorre p
+{
+  margin-top: 20px;
+}
+.errorq
+{
+  font-size: 1.8vw;
+}
+.regInputContainer:last-of-type
+{
+  background-color: #ff6666;
+  visibility: hidden;
+}
 #betInput
 {
   display: block;

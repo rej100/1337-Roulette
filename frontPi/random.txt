@@ -1,0 +1,1 @@
+db.users.update({"toldTime": true}, {$set: {"toldTime": false, "freeCollectable": true}} )

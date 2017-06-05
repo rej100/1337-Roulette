@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--font-family: 'Lato', sans-serif; font-family: 'Josefin Sans', sans-serif;-->
+    <meta charset="utf-8">
+    <title>1337</title>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans|Lato" rel="stylesheet">
+    <script src="./vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+      var hostname = "http://c-cichy.ddns.net:2777";
+      var login, password;
+
+      var stringifiedResp, parsedResp;
+
+      function GetLogin()
+      {
+        axios.post((hostname + "/getlogin"),
+        {
+
+        }).then(function(res)
+        {
+          stringifiedResp = JSON.stringify(res.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          if(parsedResp.login == undefined)
+          {
+            document.getElementById("loggedinas").innerHTML = "You must log in!"
+          }
+          else
+          {
+            document.getElementById("loggedinas").innerHTML = "Logged in as: " + parsedResp.login;
+            document.getElementById("loggedinas").style.backgroundColor = "lime";
+          }
+          setTimeout(GetLogin, 2000);
+        });
+      }
+
+      function Submit()
+      {
+        console.log("submitting");
+        login = document.getElementById("login").value;
+        password = document.getElementById("password").value;
+
+        axios.post((hostname + "/u/logisend"),
+        {
+          login: login,
+          password: password,
+        }).then(function(res)
+        {
+          stringifiedResp = JSON.stringify(res.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          if(parsedResp.case === 0)
+          {
+            console.log("gotem");
+            document.getElementById("loggedinas").style.backgroundColor = "lime";
+          }
+          if(parsedResp.case === 1)
+          {
+            console.log("shiat");
+            document.getElementById("lgia").style.visibility = "visible";
+          }
+        });
+      }
+
+    </script>
+  </head>
+  <body onload="GetLogin();">
+    <div id="topper">
+      <div id="topLinks">
+        <ul>
+          <li id="loggedinas">Logged in as: </li>
+          <li><a href="/u/logout">Logout</a></li>
+          <li><a href="/u/login">Login</a></li>
+          <li><a href="/u/register">Register</a></li>
+          <li><a href="/info">Info</a></li>
+          <li><a href="/">Main</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="cut">
+      <div id="fillersForRegister">
+        <div class="filler"></div>
+        <div class="filler"></div>
+        <div class="filler"></div>
+        <div class="filler"></div>
+        <div class="filler"></div>
+      </div>
+      <div id="regForm">
+        <div class="regInputContainer">
+          <input type="text" placeholder="Login" id="login" class="regInput" >
+        </div>
+        <div class="regInputContainer">
+          <input type="text" placeholder="Password" id="password" class="regInput" >
+        </div>
+        <div class="regButtonContainer">
+          <button type="button" name="button" class="regSubmitButton" onclick="Submit();">Submit</button>
+        </div>
+        <div class="regInputContainer" id="lgia">
+          <div class="errorq">
+            <p>Error! Invalid username/password</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

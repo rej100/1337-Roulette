@@ -78,8 +78,11 @@ app.set("host", "192.168.1.24");
 app.listen(app.get("port"), app.get("host"), function()
 {
   console.log("server started on port: " + app.get("port") + " with hostname: " + app.get("host"));
+  /*
+  var tst = db.users.find({}, {"coins": 1, "login": 1}).sort({"coins": -1});
+  console.log(tst);
+  */
 });
-
 
 
 

@@ -1,11 +1,22 @@
 {
   "name": "frontpie",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3"
+    "bcryptjs": "*",
+    "body-parser": "*",
+    "connect-flash": "*",
+    "cookie-parser": "^1.4.1",
+    "express": "*",
+    "express-handlebars": "*",
+    "express-messages": "*",
+    "express-session": "*",
+    "express-validator": "*",
+    "mongodb": "*",
+    "mongoose": "*",
+    "passport": "*",
+    "passport-http": "*",
+    "passport-local": "*"
   },
   "devDependencies": {},
   "scripts": {
@@ -13,5 +24,6 @@
     "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": ""
 }

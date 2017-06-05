@@ -194,6 +194,10 @@ body
   width: 16%;
   margin-left: 3%;
   height: 500px;
+  border-style: solid;
+  border-color: black;
+  padding-left: 1.8%;
+  padding-top: 15px;
 }
 #log
 {
@@ -210,10 +214,10 @@ body
 #adminCoinsAdd
 {
   margin-right: 6%;
-  margin-top: -420px; /*420BOIIIIIIIIIIIII*/
+  margin-top: -300px; /*Used to be 420*/
   float: right;
   width: 20%;
-  height: 180px;
+  height: 200px;
   /*background-color: lime;*/
   border-style: solid;
 
@@ -222,12 +226,50 @@ body
 {
   clear: both;
   margin-top: 1px;
-  font-size: 1.4vw;
+  font-size: 1.3vw;
   text-align: center;
+}
+#toppl
+{
+  clear: both;
+  position: absolute;
+  width: 15%;
+  height: 420px;
+  border-color: black;
+  border-style: solid;
+  margin-left: 62.5%;
+  margin-top: -240px;
+}
+.topfp
+{
+  font-size: 3.3vw;
+  text-align: center;
+  margin-top: -6px;
+}
+.toplace
+{
+  position: relative;
+  width: 80%;
+  height: 50px;
+  border-color: black;
+  border-style: solid;
+  margin-left: 8.5%;
+  margin-top: 10px;
+  background-color: cyan;
+}
+.toplace:first-of-type
+{
+  margin-top: -40px;
+}
+.toplacetext
+{
+    text-align: center;
+    font-size: 1.1vw;
+    margin-top: 2px;
 }
 #spassbutton
 {
-  margin-top: -7px;
+  margin-top: -10px;
   font-size: 3vw;
   width: 70%;
   height: 90px;

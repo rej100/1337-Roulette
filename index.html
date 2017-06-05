@@ -36,6 +36,39 @@
       }
       */
 
+      function GetJSON(son, doSlice)
+      {
+        var pr, tr, nw;
+        pr = JSON.stringify(son);
+        nw = pr;
+        if(doSlice)
+        {
+          nw = pr.slice(1, pr.length - 1);
+        }
+        tr = JSON.parse(nw);
+        return tr;
+      }
+
+      function HandleTop()
+      {
+        var ut1, ut2, ut3, ut4, ut5;
+        axios.get("/topfusers").then(function(res)
+        {
+          stringifiedResp = JSON.stringify(res.data);
+          parsedResp = JSON.parse(stringifiedResp);
+          ut1 = GetJSON(parsedResp.t1, true);
+          ut2 = GetJSON(parsedResp.t2, true);
+          ut3 = GetJSON(parsedResp.t3, true);
+          ut4 = GetJSON(parsedResp.t4, true);
+          ut5 = GetJSON(parsedResp.t5, true);
+          //console.log(ut5.coins);
+          document.getElementById("topOne").innerHTML = ut1.login + "<br> Coins: " + ut1.coins;
+          document.getElementById("topTwo").innerHTML = ut2.login + "<br> Coins: " + ut2.coins;
+          document.getElementById("topThree").innerHTML = ut3.login + "<br> Coins: " + ut3.coins;
+          document.getElementById("topFour").innerHTML = ut4.login + "<br> Coins: " + ut4.coins;
+          document.getElementById("topFive").innerHTML = ut5.login + "<br> Coins: " + ut5.coins;
+        });
+      }
       function GetLogin()
       {
         axios.post((hostname + "/getlogin"),
@@ -82,7 +115,7 @@
 
           if(parsedResp.case == 1)
           {
-            WriteLog("Free coins available on: " + parsedResp.timeLeft);
+            WriteLog("Not available yet!");
 
           }
           else
@@ -208,9 +241,11 @@
           document.getElementById("greenCheck").style.visibility = "visible";
         }
       }
+
+
     </script>
   </head>
-  <body onload="GetCoins(); UpdateCoins(); GetLogin();">
+  <body onload="GetCoins(); UpdateCoins(); GetLogin(); HandleTop();">
     <div id="topper">
       <div id="topLinks">
         <ul>
@@ -230,6 +265,7 @@
         <h1>Pick a color to bet on!</h1>
         <img id="arrowpng" src="./rightArrow.png" alt="">
       </div>
+
       <div id="betting">
         <h1>Your bet:</h1>
         <input type="number" onchange="GetBet()" id="betInput" value="">
@@ -253,6 +289,24 @@
         <button type="button" id="betit" onclick="RollClick()">Roll!</button>
         <button type="button" id="clearlg" onclick="clearLog()">Clear Log</button>
       </div>
+      <div id="toppl">
+        <p class = "topfp">-=Top 5=-</p>
+        <div class="toplace" id="tpOne">
+          <p id ="topOne" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpTwo">
+          <p id ="topTwo" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpThree">
+          <p id ="topThree" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpFour">
+          <p id ="topFour" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+        <div class="toplace" id="tpFive">
+          <p id ="topFive" class="toplacetext">Username1337420 <br>Coins: 13374201337</p>
+        </div>
+      </div>
       <div id="info">
         Odds:<br>
         Grey - 60%<br>
@@ -271,7 +325,7 @@
       </div>
 
       <div id="adminCoinsAdd">
-        <p id = "adctxt">Click here to get free coins!</p>
+        <p id = "adctxt">Click here to get free coins! (Available every 10 seconds)</p>
         <button type="button" onclick="HandleAdmClick();" id="spassbutton">GET!</button>
       </div>
 
